@@ -1,18 +1,28 @@
 # A Library for Fuzzing
 
+## scripts
+
+
+
+## fuzzlib
+
+(Not used for now)
+
 See `fuzzlib`
 
-
-## Generators
+### Generators
 
 - programs
 
 
-## Mutators
+### Mutators
+
+ - emi
+ - attribute
+ - options
 
 
 
-## Other Dirs
 
 
 

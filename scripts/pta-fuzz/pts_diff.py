@@ -1,23 +1,24 @@
 """
 Differential Testing for Pointer Analyses
 """
-import os
-import subprocess
-import time
 import argparse
-# import random
-import shutil
-import sys
-# import itertools
-from multiprocessing.pool import Pool
-import signal
-from threading import Timer
-# import multiprocessing
 import configparser
 import logging
-from typing import List
+import os
+import shutil
+import signal
+import subprocess
+import sys
+import time
+from dataclasses import dataclass
+from multiprocessing.pool import Pool
+from pathlib import Path
+from threading import Timer
+from typing import List, Optional
 
-from generator import gencsmith
+from generator_new import CSourceGenerator
+
+from generator_new import gencsmith
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', dest='input', type=str)
