@@ -30,7 +30,8 @@ GCC_CRASH_INFO = 'please submit a full bug report'
 CLANG_CRASH_INFO = 'please submit a bug report to'
 
 bug1 = 'fatal error: error in backend: segmented stacks do not support vararg functions.'
-bug2 = 'fatal error: error in backend: stack realignment in presence of dynamic allocas is not supported withthis calling convention.'
+bug2 = 'fatal error: error in backend: stack realignment in presence of dynamic' \
+       ' allocas is not supported withthis calling convention.'
 bug3 = 'fatal error: error in backend: access past stack top!'
 bug4 = 'fatal error: error in backend: zmm registers are not supported without evex512'
 bug5 = 'Debug Variable Analysis'
@@ -51,7 +52,6 @@ struct_attributes = [
 enum_attributes = [
     'enum_extensibility',
     '__attribute__((flag_enum))',
-
 ]
 
 union_attributes = [
@@ -243,7 +243,7 @@ def form_callable_when(info):
 
 def form_asm(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'asm("{random_string}")'
 
 
@@ -287,7 +287,7 @@ def insert_noreturn(info):
 def form_abi_tag(info):
     # all_characters = string.ascii_letters + string.digits + string.punctuation
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((abi_tag("{random_string}")))'
 
 
@@ -297,7 +297,7 @@ def form_callback(info):
 
 def form_btf_decl_tag(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((btf_decl_tag("{random_string}")))'
 
 
@@ -315,7 +315,7 @@ def form_cpu_specific(info):
 
 def form_warning(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((warning("{random_string}")))'
 
 
@@ -361,19 +361,19 @@ def form_try_acquire_shared_capability(info):
 
 def form_acquire_handle(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((acquire_handle("{random_string}")))'
 
 
 def form_release_handle(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((release_handle("{random_string}")))'
 
 
 def form_use_handle(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((use_handle("{random_string}")))'
 
 
@@ -611,13 +611,13 @@ def form_clang_loop(info):
 
 def form_enforce_tcb(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((enforce_tcb("{random_string}")))'
 
 
 def form_enforce_tcb_leaf(info):
     all_characters = string.ascii_letters + string.digits
-    random_string = ''.join(random.choice(all_characters) for i in range(random.randint(3, 10)))
+    random_string = ''.join(random.choice(all_characters) for _ in range(random.randint(3, 10)))
     return f'__attribute__((enforce_tcb_leaf("{random_string}")))'
 
 
@@ -870,7 +870,7 @@ class RunTest(object):
         return compile_ret_code, '', ''
 
         if self.pre != '-o':
-            return (compile_ret_code, '', '')
+            return compile_ret_code, '', ''
 
         if not os.path.exists(out_file):
             return compile_ret_code, '', ''
@@ -882,7 +882,7 @@ class RunTest(object):
                 f'[Prog]:{prog}\n[run_ret_code]:{run_ret_code}\n[run_ret]:{run_ret}\n[run_error]:{run_error}\n')
         if 'runtime error:' in run_error and not run_ret:
             run_ret = 'runtime error'
-        return (compile_ret_code, run_ret_code, run_ret)
+        return compile_ret_code, run_ret_code, run_ret
 
     def get_res(self, compiler):
         for prog, comp_o in self.case_list.items():

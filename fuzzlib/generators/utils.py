@@ -339,10 +339,10 @@ def run_cmd(cmd, timeout, work_dir=None):
         # os.system(f"pkill -9 -f {cmd_str}")
         kill_all(process.pid)
 
-        return (124, '', '')
+        return 124, '', ''
 
     # Return the exit code and stdout of the process
-    return (process.returncode, output, error)
+    return process.returncode, output, error
 
 
 def filter_crash(info, seg):
