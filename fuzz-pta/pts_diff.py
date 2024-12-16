@@ -18,8 +18,6 @@ from typing import List, Optional
 
 from generator_new import CSourceGenerator
 
-from generator_new import gencsmith
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', dest='input', type=str)
 parser.add_argument('--output', dest='output', default='/tmp/z3-res9', type=str)
