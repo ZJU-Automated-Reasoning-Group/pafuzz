@@ -1,7 +1,7 @@
 bin_tools/*
 !bin_tools/build.py
 backup
-*.txt
+tmp
 tmp.py
 *.prof
 .DS_Store
