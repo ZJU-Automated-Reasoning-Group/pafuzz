@@ -1,5 +1,5 @@
 bin_tools/*
-!bin_tools/build.py
+!bin_tools/setup.py
 backup
 tmp
 tmp.py
