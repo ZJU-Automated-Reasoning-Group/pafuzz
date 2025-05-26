@@ -7,17 +7,24 @@ A concise and modular program generation library for fuzzing, supporting Csmith 
 - **Class-based generators** with consistent interfaces
 - **Configurable parameters** via JSON config files
 - **Swarm testing support** for Csmith
+- **Undefined behavior checking** with sanitizers
+- **LLVM bitcode generation** support
 - **Type hints** and comprehensive error handling
 - **Utility functions** for command execution and sanitizer checks
 
 ## Quick Start
 
 ```python
-from fuzzlib.generators import CsmithGenerator, YarpgenGenerator
+from pafuzz.generators import CsmithGenerator, YarpgenGenerator, CSourceGenerator
 
-# Generate C program with Csmith
+# Generate C program with Csmith (original)
 csmith = CsmithGenerator()
 csmith.generate("test.c", seed=12345, functions=5, swarm=True)
+
+# Generate C program with enhanced CSourceGenerator
+csource = CSourceGenerator()
+csource.generate_source("enhanced.c", check_ub=True, seed=12345)
+csource.generate_llvm_bitcode("enhanced.c", "enhanced.bc")
 
 # Generate C++ program with YARPGen  
 yarpgen = YarpgenGenerator()
@@ -46,6 +53,14 @@ Create `~/.pafuzz/config.json`:
 - Supports swarm testing with automatic feature selection
 - Configurable struct fields, block depth, array dimensions
 
+### CSourceGenerator
+
+- `generate_source(output_file, check_ub=False, seed=None)` - Generate C program with UB checking
+- `generate_llvm_bitcode(c_file, bc_file)` - Generate LLVM bitcode from C source
+- `check_undefined_behavior(cfilename)` - Check for undefined behavior using sanitizers
+- Enhanced swarm testing with extended option set
+- Built-in undefined behavior detection and filtering
+
 ### YarpgenGenerator  
 
 - `generate(output_dir, seed=None, std="c++17", emit_pragmas=True, ...)` - Generate C++ program
@@ -58,6 +73,7 @@ Create `~/.pafuzz/config.json`:
 - `sanitize_check(src_file, include_path, tmp_dir)` - Run sanitizer checks
 - `cleanup_tmp_files(tmp_dir, keep_source=False)` - Clean temporary files
 
-## Example
+## Examples
 
-See `example.py` for complete usage demonstrations. 
+- See `example.py` for complete usage demonstrations
+- See `csource_example.py` for CSourceGenerator usage examples 

@@ -5,8 +5,9 @@ import logging
 import tempfile
 from pathlib import Path
 
-from pafuzz.generators.csmisth_gen import CsmithGenerator
-from pafuzz.generators.yarpgen_gen import YarpgenGenerator
+
+from pafuzz.generators.csmith import CsmithGenerator
+from pafuzz.generators.yarpgen import YarpgenGenerator
 
 def setup_logging():
     """Setup basic logging configuration."""
@@ -38,30 +39,6 @@ def demo_csmith():
         else:
             print("✗ Failed to generate C program")
 
-def demo_yarpgen():
-    """Demonstrate YARPGen generator usage."""
-    print("\n=== YARPGen Generator Demo ===")
-    
-    generator = YarpgenGenerator()
-    
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        output_dir = Path(tmp_dir) / "yarpgen_output"
-        
-        # Generate C++ program
-        success = generator.generate(
-            str(output_dir),
-            seed=54321,
-            std="c++17",
-            emit_pragmas=True
-        )
-        
-        if success:
-            print(f"✓ Generated C++ program in: {output_dir}")
-            files = list(output_dir.glob("*.cpp")) + list(output_dir.glob("*.h"))
-            for f in files:
-                print(f"  {f.name}: {f.stat().st_size} bytes")
-        else:
-            print("✗ Failed to generate C++ program")
 
 def main():
     """Run generator demonstrations."""
@@ -72,7 +49,6 @@ def main():
     
     try:
         demo_csmith()
-        demo_yarpgen()
     except Exception as e:
         print(f"Demo failed: {e}")
         logging.exception("Demo error")

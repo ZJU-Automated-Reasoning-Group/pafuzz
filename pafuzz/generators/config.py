@@ -68,8 +68,18 @@ def load_config(config_path: Optional[str] = None) -> Config:
     
     # Determine config path
     if not config_path:
-        config_path = os.environ.get('PAFUZZ_CONFIG', 
-                                   Path.home() / '.pafuzz' / 'config.json')
+        # First try environment variable
+        config_path = os.environ.get('PAFUZZ_CONFIG')
+        
+        # If not set, try ../bintools/config.json relative to this file
+        if not config_path:
+            current_dir = Path(__file__).parent
+            bintools_config = current_dir.parent.parent / 'config.json'
+            if bintools_config.exists():
+                config_path = bintools_config
+            else:
+                # Fall back to default location
+                config_path = Path.home() / '.pafuzz' / 'config.json'
     
     # Load user config if exists
     if config_path and Path(config_path).exists():

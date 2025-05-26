@@ -6,8 +6,11 @@ import subprocess
 import os
 import signal
 import shutil
+import logging
 from typing import Tuple, Optional, List, Union
+from pathlib import Path
 from pafuzz.generators.config import config
+
 
 def run_cmd(cmd: Union[str, List[str]], timeout: int, 
            work_dir: Optional[str] = None) -> Tuple[int, str, str]:
@@ -130,4 +133,68 @@ def _safe_remove(filepath: str):
             os.remove(filepath)
     except OSError:
         pass
+
+def check_undefined_behavior(cfilename: str, clang_path: Optional[str] = None,
+                           csmith_runtime: Optional[str] = None) -> int:
+    """
+    Check whether the generated C program has undefined behavior.
+    
+    Args:
+        cfilename: Path to the C source file
+        clang_path: Path to clang compiler (uses config default if None)
+        csmith_runtime: Path to csmith runtime (uses config default if None)
+    
+    Returns:
+        0: No undefined behavior detected
+        1: Runtime error detected
+        2: Compilation error
+        3: Execution timeout
+    """
+    clang = clang_path or config.CLANG
+    runtime = csmith_runtime or config.CSMITH_HOME
+    
+    if not clang:
+        logging.warning("Clang path not configured, skipping UB check")
+        return 0
+        
+    exe = f"{cfilename}.exe-clang"
+    out = f"{cfilename}.out-clang"
+
+    # Compile with UBSan
+    compile_cmd = [
+        "timeout", "30s",
+        clang, "-msse4.2", "-m64",
+        f"-I{runtime}",
+        "-O0", "-fsanitize=undefined",
+        "-c", cfilename, "-o", exe
+    ]
+
+    try:
+        ret_code, stdout, stderr = run_cmd(compile_cmd, config.SAN_COMPILE_TIMEOUT)
+        if ret_code != 0:
+            logging.error("Cannot compile program for UB check")
+            return 2
+
+        # Run the compiled program
+        run_cmd_list = ["timeout", "30s", f"./{exe}"]
+        with open(out, "w") as outf:
+            result = subprocess.run(run_cmd_list,
+                                    stdout=outf,
+                                    stderr=subprocess.DEVNULL)
+            if result.returncode != 0:
+                logging.error("Program execution timeout during UB check")
+                return 3
+
+        # Check for runtime errors
+        with open(out, "r") as outf:
+            if any("runtime error" in line for line in outf):
+                logging.error("Runtime error detected")
+                return 1
+
+        return 0
+
+    finally:
+        # Cleanup
+        for file in [exe, out]:
+            Path(file).unlink(missing_ok=True)
     

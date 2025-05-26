@@ -1,6 +1,5 @@
-bin_tools/*
-!bin_tools/setup.py
 backup
+config.json
 tmp
 tmp.py
 *.prof
