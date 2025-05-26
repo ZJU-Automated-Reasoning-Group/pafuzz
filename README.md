@@ -1,6 +1,4 @@
-# FuzzIt: A Comprehensive Fuzzing Framework
-
-FuzzIt is a sophisticated fuzzing framework designed for program analysis and testing, with a particular focus on pointer analysis (PTA) and call graph (CG) analysis. This library provides tools for generating test cases, performing differential testing, and analyzing results.
+# pafuzz
 
 ## Repository Structure
 
