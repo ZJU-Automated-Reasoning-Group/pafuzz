@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="fuzzit",
+    name="pafuzz",
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
@@ -16,15 +16,12 @@ setup(
     extras_require={
         "dev": [
             "pytest>=6.0.0",
-            "pytest-cov>=2.10.0",
-            "black>=22.0.0",
-            "isort>=5.0.0",
-            "flake8>=4.0.0",
+            "pytest-cov>=2.10.0"
         ],
     },
     entry_points={
         "console_scripts": [
-            "fuzzit=fuzzit.cli:main",
+            "pafuzz=pafuzz.cli:main",
         ],
     },
     author="Your Name",
