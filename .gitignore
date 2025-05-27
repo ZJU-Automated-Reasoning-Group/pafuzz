@@ -1,4 +1,5 @@
 backup
+*.egg-info
 config.json
 tmp
 tmp.py
